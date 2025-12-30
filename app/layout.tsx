@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/client/queryClient";
+import { Providers } from "./providers";
 
 const interFont = Inter({
   subsets: ["latin"],
@@ -23,9 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={` ${interFont.className} antialiased`}
       >
-         <QueryClientProvider client={queryClient}>
+        <Providers>
           {children}
-        </QueryClientProvider>
+        </Providers>
       </body>
     </html>
   );
