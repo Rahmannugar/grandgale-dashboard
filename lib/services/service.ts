@@ -1,4 +1,3 @@
-// src/features/projects/services.ts
 import { apiClient } from "@/lib/client/apiClient"
 import { Project } from "../types/types"
 import { getProjects, setProjects } from "../store/mockStore"
