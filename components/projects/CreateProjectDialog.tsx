@@ -15,10 +15,11 @@ import { Input } from "@/components/ui/input"
 
 export function CreateProjectDialog() {
   const [title, setTitle] = useState("")
+  const [open, setOpen] = useState(false)
   const { mutate, isPending } = useCreateProject()
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Create Project</Button>
       </DialogTrigger>
@@ -28,21 +29,30 @@ export function CreateProjectDialog() {
           <DialogTitle>New Project</DialogTitle>
         </DialogHeader>
 
-        <Input
-          placeholder="Project title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-
-        <Button
-          disabled={!title || isPending}
-          onClick={() => {
-            mutate(title)
-            setTitle("")
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            mutate(title, {
+              onSuccess: () => {
+                setOpen(false)
+                setTitle("")
+              }
+            })
           }}
+          className="space-y-4"
         >
-          Create
-        </Button>
+          <Input
+            placeholder="Project title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
+
+          <div className="flex justify-end">
+            <Button type="submit" disabled={!title || isPending}>
+              Create
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   )

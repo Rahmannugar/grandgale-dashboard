@@ -2,7 +2,7 @@
 
 export function Header() {
   return (
-    <header className="h-14 border-b px-6 flex items-center">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-6 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <h1 className="text-lg font-semibold">Projects Dashboard</h1>
     </header>
   )

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { projectsApi } from "../services/service"
 import { Project } from "../types/types"
+import { toast } from "sonner"
 
 export function useProjects() {
   return useQuery<Project[]>({
@@ -16,6 +17,7 @@ export function useCreateProject() {
     mutationFn: (title: string) => projectsApi.create(title),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
+      toast.success("Project created successfully")
     }
   })
 }
@@ -33,6 +35,7 @@ export function useUpdateProject() {
     }) => projectsApi.update(id, title),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
+      toast.success("Project updated successfully")
     }
   })
 }
@@ -44,6 +47,7 @@ export function useDeleteProject() {
     mutationFn: (id: string) => projectsApi.remove(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["projects"] })
+      toast.success("Project deleted successfully")
     }
   })
 }

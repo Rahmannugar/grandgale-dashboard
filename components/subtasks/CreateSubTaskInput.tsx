@@ -1,30 +1,31 @@
-
 "use client"
 
 import { useState } from "react"
-import { useCreateTask } from "@/lib/hooks/useTasks"
+import { useCreateSubtask } from "@/lib/hooks/useSubTasks"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-export function CreateTaskDialog({
-  projectId
+export function CreateSubtaskInput({
+  projectId,
+  taskId
 }: {
   projectId: string
+  taskId: string
 }) {
   const [title, setTitle] = useState("")
-  const { mutate } = useCreateTask()
+  const { mutate } = useCreateSubtask()
 
   return (
     <form
-      className="mt-2 flex gap-2"
+      className="mt-2 flex gap-2 pl-4"
       onSubmit={(e) => {
         e.preventDefault()
-        mutate({ projectId, title })
+        mutate({ projectId, taskId, title })
         setTitle("")
       }}
     >
       <Input
-        placeholder="New task"
+        placeholder="New subtask"
         value={title}
         onChange={e => setTitle(e.target.value)}
       />

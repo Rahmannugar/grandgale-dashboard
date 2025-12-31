@@ -1,6 +1,5 @@
-import { apiClient } from "@/lib/client/apiClient"
 import { Project } from "../types/types"
-import { addTask, getProjects, removeTask, setProjects, updateTask } from "../store/mockStore"
+import { db } from "../store/mockStore"
 
 const delay = (ms = 500) =>
   new Promise(resolve => setTimeout(resolve, ms))
@@ -8,42 +7,29 @@ const delay = (ms = 500) =>
 export const projectsApi = {
   async getAll(): Promise<Project[]> {
     await delay()
-    return getProjects()
+    return db.getProjects()
   },
 
   async create(title: string): Promise<Project> {
     await delay()
-
-    const project: Project = {
-      id: crypto.randomUUID(),
-      title,
-      status: "todo",
-      tasks: []
-    }
-
-    setProjects([...getProjects(), project])
-    return project
+    return db.createProject(title)
   },
 
   async update(id: string, title: string): Promise<Project> {
     await delay()
-
-    const updated = getProjects().map(p =>
-      p.id === id ? { ...p, title } : p
-    )
-
-    setProjects(updated)
-    return updated.find(p => p.id === id)!
+    const updated = db.updateProject(id, title)
+    if (!updated) throw new Error("Project not found")
+    return updated
   },
 
   async remove(id: string): Promise<void> {
     await delay()
-    setProjects(getProjects().filter(p => p.id !== id))
+    db.deleteProject(id)
   },
 
   async createTask(projectId: string, title: string) {
     await delay()
-    return addTask(projectId, title)
+    return db.addTask(projectId, title)
   },
 
   async updateTask(
@@ -52,11 +38,45 @@ export const projectsApi = {
     title: string
   ) {
     await delay()
-    updateTask(projectId, taskId, title)
+    db.updateTask(projectId, taskId, title)
   },
 
   async deleteTask(projectId: string, taskId: string) {
     await delay()
-    removeTask(projectId, taskId)
+    db.deleteTask(projectId, taskId)
+  },
+
+  async createSubtask(projectId: string, taskId: string, title: string) {
+    await delay()
+    return db.addSubtask(projectId, taskId, title)
+  },
+
+  async updateSubtask(
+    projectId: string,
+    taskId: string,
+    subtaskId: string,
+    title: string
+  ) {
+    await delay()
+    db.updateSubtask(projectId, taskId, subtaskId, title)
+  },
+
+  async deleteSubtask(
+    projectId: string,
+    taskId: string,
+    subtaskId: string
+  ) {
+    await delay()
+    db.deleteSubtask(projectId, taskId, subtaskId)
+  },
+
+  async toggleSubtaskStatus(
+    projectId: string,
+    taskId: string,
+    subtaskId: string
+  ) {
+    await delay()
+    db.toggleSubtaskStatus(projectId, taskId, subtaskId)
   }
 }
+

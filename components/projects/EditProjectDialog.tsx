@@ -1,4 +1,3 @@
-// src/features/projects/components/edit-project-dialog.tsx
 "use client"
 
 import { useState } from "react"
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Pencil } from "lucide-react"
 
 export function EditProjectDialog({
   id,
@@ -23,11 +23,13 @@ export function EditProjectDialog({
   const [title, setTitle] = useState(initialTitle)
   const { mutate, isPending } = useUpdateProject()
 
+  const [open, setOpen] = useState(false)
+  
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          Edit
+        <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-foreground">
+          <Pencil className="h-4 w-4" />
         </Button>
       </DialogTrigger>
 
@@ -36,18 +38,31 @@ export function EditProjectDialog({
           <DialogTitle>Edit Project</DialogTitle>
         </DialogHeader>
 
-        <Input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-
-        <Button
-          disabled={!title || isPending}
-          onClick={() => mutate({ id, title })}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            mutate(
+              { id, title },
+              {
+                onSuccess: () => setOpen(false)
+              }
+            )
+          }}
+          className="space-y-4"
         >
-          Save
-        </Button>
+          <Input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
+
+          <div className="flex justify-end">
+            <Button type="submit" disabled={!title || isPending}>
+              Save
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   )
 }
+

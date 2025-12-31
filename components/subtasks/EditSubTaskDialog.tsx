@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Task } from "@/lib/types/types"
-import { useUpdateTask } from "@/lib/hooks/useTasks"
+import { Subtask } from "@/lib/types/types"
+import { useUpdateSubtask } from "@/lib/hooks/useSubTasks"
 import {
   Dialog,
   DialogContent,
@@ -14,48 +14,47 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Pencil } from "lucide-react"
 
-export function EditTaskDialog({
+export function EditSubtaskDialog({
   projectId,
-  task
+  taskId,
+  subtask
 }: {
   projectId: string
-  task: Task
+  taskId: string
+  subtask: Subtask
 }) {
-  const [title, setTitle] = useState(task.title)
-  const { mutate, isPending } = useUpdateTask()
+  const [title, setTitle] = useState(subtask.title)
+  const { mutate, isPending } = useUpdateSubtask()
 
   const [open, setOpen] = useState(false)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="icon" variant="ghost" className="h-7 w-7 text-muted-foreground hover:text-foreground">
-          <Pencil className="h-3.5 w-3.5" />
+        <Button size="icon" variant="ghost" className="h-6 w-6 text-muted-foreground hover:text-foreground">
+          <Pencil className="h-3 w-3" />
         </Button>
       </DialogTrigger>
-
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
+          <DialogTitle>Edit Subtask</DialogTitle>
         </DialogHeader>
-
         <form
           onSubmit={(e) => {
             e.preventDefault()
             mutate(
-              { projectId, taskId: task.id, title },
+              { projectId, taskId, subtaskId: subtask.id, title },
               { onSuccess: () => setOpen(false) }
             )
           }}
           className="space-y-4"
         >
-          <Input
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-
+          <Input value={title} onChange={e => setTitle(e.target.value)} />
           <div className="flex justify-end">
-            <Button type="submit" disabled={!title || isPending}>
+            <Button
+              type="submit"
+              disabled={!title || isPending}
+            >
               Save
             </Button>
           </div>
