@@ -10,7 +10,7 @@ class MockDB {
       {
         id: "project-1",
         title: "Admin Dashboard",
-        status: "todo",
+        status: "done",
         tasks: [
           {
             id: "task-1",
@@ -62,9 +62,15 @@ class MockDB {
       status: "todo",
       subtasks: []
     }
-    this.projects = this.projects.map(p =>
-      p.id === projectId ? { ...p, tasks: [...p.tasks, task] } : p
-    )
+    this.projects = this.projects.map(p => {
+      if (p.id !== projectId) return p
+      const updatedTasks = [...p.tasks, task]
+      return {
+        ...p,
+        tasks: updatedTasks,
+        status: deriveStatus(updatedTasks.map(t => t.status))
+      }
+    })
     return task
   }
 
@@ -80,11 +86,15 @@ class MockDB {
   }
 
   deleteTask(projectId: string, taskId: string) {
-    this.projects = this.projects.map(p =>
-      p.id === projectId
-        ? { ...p, tasks: p.tasks.filter(t => t.id !== taskId) }
-        : p
-    )
+    this.projects = this.projects.map(p => {
+      if (p.id !== projectId) return p
+      const updatedTasks = p.tasks.filter(t => t.id !== taskId)
+      return {
+        ...p,
+        tasks: updatedTasks,
+        status: deriveStatus(updatedTasks.map(t => t.status))
+      }
+    })
   }
 
   addSubtask(projectId: string, taskId: string, title: string): Subtask {
@@ -93,18 +103,23 @@ class MockDB {
       title,
       status: "todo"
     }
-    this.projects = this.projects.map(p =>
-      p.id === projectId
-        ? {
-            ...p,
-            tasks: p.tasks.map(t =>
-              t.id === taskId
-                ? { ...t, subtasks: [...t.subtasks, subtask] }
-                : t
-            )
-          }
-        : p
-    )
+    this.projects = this.projects.map(p => {
+      if (p.id !== projectId) return p
+      const updatedTasks = p.tasks.map(t => {
+        if (t.id !== taskId) return t
+        const updatedSubtasks = [...t.subtasks, subtask]
+        return {
+          ...t,
+          subtasks: updatedSubtasks,
+          status: deriveStatus(updatedSubtasks.map(s => s.status))
+        }
+      })
+      return {
+        ...p,
+        tasks: updatedTasks,
+        status: deriveStatus(updatedTasks.map(t => t.status))
+      }
+    })
     return subtask
   }
 
@@ -134,21 +149,23 @@ class MockDB {
   }
 
   deleteSubtask(projectId: string, taskId: string, subtaskId: string) {
-    this.projects = this.projects.map(p =>
-      p.id === projectId
-        ? {
-            ...p,
-            tasks: p.tasks.map(t =>
-              t.id === taskId
-                ? {
-                    ...t,
-                    subtasks: t.subtasks.filter(s => s.id !== subtaskId)
-                  }
-                : t
-            )
-          }
-        : p
-    )
+    this.projects = this.projects.map(p => {
+      if (p.id !== projectId) return p
+      const updatedTasks = p.tasks.map(t => {
+        if (t.id !== taskId) return t
+        const updatedSubtasks = t.subtasks.filter(s => s.id !== subtaskId)
+        return {
+          ...t,
+          subtasks: updatedSubtasks,
+          status: deriveStatus(updatedSubtasks.map(s => s.status))
+        }
+      })
+      return {
+        ...p,
+        tasks: updatedTasks,
+        status: deriveStatus(updatedTasks.map(t => t.status))
+      }
+    })
   }
 
   toggleSubtaskStatus(projectId: string, taskId: string, subtaskId: string) {
