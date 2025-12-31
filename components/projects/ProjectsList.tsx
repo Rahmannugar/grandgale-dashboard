@@ -26,7 +26,7 @@ export function ProjectsList() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8">
+    <div className="mx-auto max-w-5xl space-y-4">
       <div className="flex items-center justify-between border-b pb-4">
         <div>
            <h2 className="text-2xl font-bold tracking-tight">Projects</h2>
@@ -44,7 +44,7 @@ export function ProjectsList() {
               key={project.id} 
               className={`transition-all duration-200 border-l-4 ${isOpen ? 'border-l-primary shadow-md' : 'border-l-transparent hover:border-l-primary/50 hover:shadow-sm'}`}
             >
-              <CardHeader className="p-4">
+              <CardHeader className="p-3">
                 <div className="flex items-center justify-between">
                    <div
                     className="flex flex-1 items-center gap-3 cursor-pointer select-none group"
@@ -53,7 +53,7 @@ export function ProjectsList() {
                     <div className={`transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}>
                        <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
                     </div>
-                    <CardTitle className="text-base font-medium group-hover:text-primary transition-colors">
+                    <CardTitle className="text-base font-medium group-hover:text-primary transition-colors break-all">
                       {project.title}
                     </CardTitle>
                     <Badge variant={project.status === 'done' ? 'default' : 'secondary'} className="capitalize opacity-90">
@@ -71,7 +71,7 @@ export function ProjectsList() {
                 </div>
 
                 {isOpen && (
-                  <div className="pt-4 pl-2 animate-in slide-in-from-top-2 duration-200">
+                  <div className="pt-2 pl-2 animate-in slide-in-from-top-2 duration-200">
                     <div className="pl-6 border-l-2 border-border/50 space-y-4">
                       <TasksList
                         projectId={project.id}

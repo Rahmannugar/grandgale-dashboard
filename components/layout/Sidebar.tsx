@@ -2,9 +2,11 @@
 
 import Link from "next/link"
 
-export function Sidebar() {
+import { cn } from "@/lib/utils"
+
+export function Sidebar({ className }: { className?: string }) {
   return (
-    <aside className="w-64 border-r bg-sidebar text-sidebar-foreground p-4">
+    <aside className={cn("w-64 border-r bg-sidebar text-sidebar-foreground p-4 h-full", className)}>
       <h2 className="mb-6 text-lg font-semibold">Admin</h2>
       <nav className="space-y-2">
         <Link

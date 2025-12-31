@@ -22,7 +22,7 @@ export function SubtasksList({
       {subtasks.map(s => (
         <div
           key={s.id}
-          className="group flex items-center justify-between rounded-md p-2 text-sm hover:bg-background/80 transition-colors"
+          className="group flex items-center justify-between rounded-md p-1.5 text-sm hover:bg-background/80 transition-colors"
         >
           <div className="flex items-center gap-3">
             <Checkbox
@@ -35,7 +35,7 @@ export function SubtasksList({
                 })
               }
             />
-            <span className={s.status === "done" ? "line-through text-muted-foreground" : ""}>
+            <span className={`${s.status === "done" ? "line-through text-muted-foreground" : ""} break-all`}>
               {s.title}
             </span>
           </div>

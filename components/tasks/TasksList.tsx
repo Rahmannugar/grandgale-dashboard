@@ -20,7 +20,7 @@ export function TasksList({
   const toggleTask = useStore(s => s.toggleTask)
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {tasks.length === 0 && (
          <p className="text-sm text-muted-foreground italic py-2">No tasks created yet.</p>
       )}
@@ -30,7 +30,7 @@ export function TasksList({
 
         return (
           <div key={task.id} className="group rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md">
-            <div className="flex items-center justify-between p-3">
+            <div className="flex items-center justify-between p-2">
                <div 
                  className="flex flex-1 items-center gap-3 cursor-pointer select-none"
                  onClick={() => toggleTask(task.id)}
@@ -45,7 +45,7 @@ export function TasksList({
                     ) : (
                       <Circle className="size-4 text-muted-foreground" />
                     )}
-                    <span className={`text-sm font-medium ${isDone ? 'line-through text-muted-foreground' : ''}`}>
+                    <span className={`text-sm font-medium ${isDone ? 'line-through text-muted-foreground' : ''} break-all`}>
                       {task.title}
                     </span>
                  </div>
@@ -68,7 +68,7 @@ export function TasksList({
 
             {isOpen && (
               <div className="border-t bg-muted/30 p-3 animate-in slide-in-from-top-1 duration-200">
-                <div className="pl-6 space-y-3">
+                <div className="pl-4 space-y-2">
                    <SubtasksList
                     projectId={projectId}
                     taskId={task.id}
